@@ -1,0 +1,289 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta property="og:title" content="Тим — ИИ-мультики в Claude Code">
+<meta property="og:description" content="794 000 просмотров на одном рилсе, +3 000 подписчиков за неделю. Бесплатный гайд, курс и ролики на заказ.">
+<meta property="og:image" content="media/r1.jpg"><meta name="theme-color" content="#0c1120">
+<link rel="icon" href="media/avatar.jpg">
+<title>Тим — ИИ-мультики</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Делаю ИИ-мультики в Claude Code: 794 000 просмотров на одном рилсе, +3 000 подписчиков за неделю. Бесплатный гайд, курс и ролики на заказ.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;600&family=Unbounded:wght@600;800&display=swap">
+<style>
+/* Layout: one 520px column, blackout night of the reels; the only loud thing is the red LED counter, the amber lamp is the action colour. */
+:root{
+  --night:#0c1120;      /* фон роликов: ночь без света */
+  --panel:#151c2e;      /* стены квартиры */
+  --line:#26304a;
+  --ink:#eef1f7;
+  --muted:#939bb0;
+  --amber:#ffb53d;      /* лампа / фонарик — цвет действия */
+  --amber-ink:#1d1405;
+  --signal:#ff3b2f;     /* красные цифры часов 14:07 */
+  --f-display:"Unbounded","Arial Black",system-ui,sans-serif;
+  --f-body:"Golos Text",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--night);color:var(--ink);font:16px/1.55 var(--f-body);
+  background-image:radial-gradient(120% 60% at 50% -10%,#1b2540 0%,transparent 60%);background-repeat:no-repeat}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--amber);outline-offset:3px;border-radius:6px}
+.wrap{max-width:520px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 40px;display:grid;gap:56px}
+h2{font:800 1.35rem/1.2 var(--f-display);margin:0;text-wrap:balance;letter-spacing:-.01em}
+.sub{color:var(--muted);margin:6px 0 0;font-size:.95rem}
+section{display:grid;gap:18px;min-width:0}
+
+/* hero */
+.hero{display:grid;gap:18px}
+.who{display:flex;gap:14px;align-items:center}
+.who img{width:72px;height:72px;border-radius:50%;border:2px solid var(--amber);box-shadow:0 0 0 5px rgba(255,181,61,.12),0 0 32px rgba(255,181,61,.25);flex:none}
+.who b{font:800 1.5rem/1.1 var(--f-display);display:block}
+.who a{color:var(--muted);text-decoration:none;font-size:.95rem}
+.who a:hover{color:var(--ink)}
+.lead{font-size:1.12rem;margin:0;max-width:34ch}
+.hook{margin:0;display:grid;gap:2px;font:800 clamp(1.45rem,6.6vw,1.85rem)/1.15 var(--f-display);letter-spacing:-.01em;text-wrap:balance}
+.hook span:first-child{color:var(--amber)}
+.hook small{font:400 .95rem/1.4 var(--f-body);color:var(--muted);margin-top:6px}
+.btn{display:flex;align-items:center;justify-content:center;gap:10px;min-height:56px;padding:14px 20px;border-radius:14px;font:600 1.02rem/1.25 var(--f-body);text-decoration:none;text-align:center;transition:transform .12s ease,background-color .15s}
+.btn:active{transform:scale(.98)}
+.btn-main{background:var(--amber);color:var(--amber-ink);box-shadow:0 10px 40px -10px rgba(255,181,61,.55)}
+.btn-main:hover{background:#ffc35f}
+.btn-ghost{border:1.5px solid var(--line);color:var(--ink);background:rgba(21,28,46,.6)}
+.btn-ghost:hover{border-color:var(--muted)}
+.btn small{display:block;font-weight:400;font-size:.82rem;opacity:.75}
+.ctas{display:grid;gap:10px}
+
+/* LED counters */
+.leds{display:grid;gap:12px}
+.led{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline;padding:16px 18px;border:2px solid rgba(255,59,47,.55);border-radius:14px;background:#140c12;box-shadow:inset 0 0 24px rgba(255,59,47,.12),0 0 24px -8px rgba(255,59,47,.45)}
+.led strong{font:800 clamp(1.7rem,8vw,2.3rem)/1 var(--f-display);color:var(--signal);text-shadow:0 0 14px rgba(255,59,47,.65);font-variant-numeric:tabular-nums;letter-spacing:.02em;white-space:nowrap}
+.led span{color:var(--ink);font-size:1rem;line-height:1.35;min-width:0}
+.led i{color:var(--muted);font-style:normal;font-size:.9rem;flex-basis:100%}
+.note{color:var(--muted);font-size:.85rem;margin:0}
+
+/* reels strip */
+.strip{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px;margin-right:calc(-1 * max(16px,env(safe-area-inset-right,0px)));scrollbar-width:none}
+.strip::-webkit-scrollbar{display:none}
+.reel{flex:0 0 58%;max-width:230px;scroll-snap-align:start;text-decoration:none;display:grid;gap:8px}
+.reel:last-child{margin-right:16px}
+.frame{position:relative;aspect-ratio:9/16;max-width:100%;border-radius:14px;overflow:hidden;background:var(--panel) center/cover no-repeat;border:1px solid var(--line)}
+.frame video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .25s}
+.frame video.on{opacity:1}
+.views{position:absolute;left:8px;bottom:8px;background:rgba(12,17,32,.82);border-radius:8px;padding:3px 8px;font:600 .8rem/1.4 var(--f-body);font-variant-numeric:tabular-nums}
+.reel p{margin:0;font-size:.92rem;line-height:1.3}
+.hint{color:var(--muted);font-size:.85rem;margin:0}
+
+/* tiers */
+.tiers{display:grid;gap:12px}
+.tier{border:1px solid var(--line);border-radius:16px;padding:20px;background:var(--panel);display:grid;gap:12px}
+.tier.top{border:2px solid var(--amber);background:linear-gradient(180deg,#1d2033,var(--panel))}
+.tier header{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.tier h3{margin:0;font:600 1.05rem/1.25 var(--f-display)}
+.price{font:800 1.5rem/1 var(--f-display);white-space:nowrap}
+.tag{font-size:.8rem;color:var(--amber-ink);background:var(--amber);border-radius:999px;padding:2px 10px;font-weight:600}
+.tier ul{margin:0;padding-left:1.1em;display:grid;gap:4px;color:#d3d8e4;font-size:.95rem}
+.tier .btn{min-height:50px}
+
+/* order */
+.packs{display:grid;gap:10px}
+.pack{display:grid;grid-template-columns:1fr auto;gap:2px 12px;padding:14px 16px;border-bottom:1px solid var(--line)}
+.pack:last-child{border-bottom:0}
+.pack b{font:600 1rem/1.3 var(--f-display)}
+.pack .p{font:800 1.05rem/1.3 var(--f-display);color:var(--amber);white-space:nowrap;text-align:right}
+.pack span:not(.p){grid-column:1/-1;color:var(--muted);font-size:.92rem}
+.box{border:1px solid var(--line);border-radius:16px;background:var(--panel)}
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:14px;counter-reset:s}
+.steps li{display:grid;grid-template-columns:36px 1fr;gap:12px;align-items:start;counter-increment:s}
+.steps li::before{content:counter(s);width:36px;height:36px;border-radius:50%;border:1.5px solid var(--amber);color:var(--amber);display:grid;place-items:center;font:800 .95rem/1 var(--f-display)}
+.steps b{display:block}
+.steps span{color:var(--muted);font-size:.92rem}
+
+/* reviews */
+.revs{display:grid;gap:10px}
+.rev{border:1.5px dashed #4a5372;border-radius:14px;padding:14px 16px;color:var(--muted);font-size:.92rem}
+.rev b{color:var(--ink)}
+.flag{display:inline-block;font-size:.78rem;color:var(--signal);border:1px solid var(--signal);border-radius:6px;padding:1px 8px;margin-bottom:6px}
+
+footer{display:grid;gap:14px;color:var(--muted);font-size:.88rem;border-top:1px solid var(--line);padding-top:24px}
+footer nav{display:flex;flex-wrap:wrap;gap:8px}
+footer nav a{border:1px solid var(--line);border-radius:999px;padding:8px 14px;text-decoration:none;color:var(--ink)}
+footer nav a:hover{border-color:var(--muted)}
+
+.toast{position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--night);padding:10px 16px;border-radius:10px;font-size:.9rem;max-width:calc(100% - 32px);text-align:center;z-index:5}
+
+@media (min-width:760px){
+  .wrap{padding-block:56px 56px;gap:72px}
+  .reel{flex-basis:44%}
+}
+@media (prefers-reduced-motion:reduce){.btn{transition:none}}
+</style>
+</head><body>
+
+<div class="wrap">
+  <header class="hero">
+    <div class="who">
+      <img src="media/avatar.jpg" width="72" height="72" alt="Тим, герой моих мультиков">
+      <div>
+        <b>Тим</b>
+        <a href="https://www.instagram.com/ataiev.show/" target="_blank" rel="noopener">@ataiev.show в Instagram</a>
+      </div>
+    </div>
+    <p class="hook"><span>+3 000 подписчиков</span><span>1,4 млн посещений страницы</span><small>за одну неделю на ИИ-мультиках</small></p>
+    <p class="lead">Делаю ИИ-мультики в Claude Code и показываю, как сделать такой же ролик за вечер, даже если вы ни разу не писали код.</p>
+    <div class="ctas">
+      <a class="btn btn-main" data-link="free" href="https://t.me/PLACEHOLDER_FREE_CHANNEL" target="_blank" rel="noopener">
+        <span>Забрать бесплатный гайд<small>Telegram-канал: гайд и 8 готовых промтов</small></span>
+      </a>
+      <a class="btn btn-ghost" href="https://t.me/IstTiimur" target="_blank" rel="noopener">Заказать ролик в Telegram</a>
+    </div>
+  </header>
+
+  <section aria-labelledby="h-cases">
+    <div>
+      <h2 id="h-cases">Мои цифры</h2>
+      <p class="sub">Ролики из ленты ниже. Канал начал с нуля в ноябре 2026.</p>
+    </div>
+    <div class="leds">
+      <div class="led"><strong>794 000</strong><span>просмотров</span><i>рилс «17 ноября», 63 тыс. репостов</i></div>
+      <div class="led"><strong>344 000</strong><span>просмотров</span><i>рилс «Вторник, 14:07», 20 тыс. репостов</i></div>
+      <div class="led"><strong>1 000 $+</strong><span>заработано</span><i>заказы роликов, реклама, монетизация</i></div>
+    </div>
+    <p class="note">Это мой результат, а не обещание. В курсе разбираю, как он получился.</p>
+  </section>
+
+  <section aria-labelledby="h-reels">
+    <div>
+      <h2 id="h-reels">Ролики, которые залетели</h2>
+      <p class="sub">Все сделаны ИИ-агентом: сценарий, озвучка, анимация, монтаж.</p>
+    </div>
+    <div class="strip" id="strip">
+      <a class="reel" href="https://www.instagram.com/ataiev.show/reels/" target="_blank" rel="noopener">
+        <div class="frame" style="background-image:url(media/r1.jpg)"><video data-src="media/r1.mp4" poster="media/r1.jpg" muted loop playsinline preload="none" aria-hidden="true"></video><span class="views">794k</span></div>
+        <p>17 ноября. 90 дней без света</p>
+      </a>
+      <a class="reel" href="https://www.instagram.com/ataiev.show/reels/" target="_blank" rel="noopener">
+        <div class="frame" style="background-image:url(media/r2.jpg)"><video data-src="media/r2.mp4" poster="media/r2.jpg" muted loop playsinline preload="none" aria-hidden="true"></video><span class="views">344k</span></div>
+        <p>Вторник, 14:07. Где ты будешь?</p>
+      </a>
+      <a class="reel" href="https://www.instagram.com/ataiev.show/reels/" target="_blank" rel="noopener">
+        <div class="frame" style="background-image:url(media/r3.jpg)"><video data-src="media/r3.mp4" poster="media/r3.jpg" muted loop playsinline preload="none" aria-hidden="true"></video><span class="views">85k</span></div>
+        <p>Европе сказали: вам — нет</p>
+      </a>
+      <a class="reel" href="https://www.instagram.com/ataiev.show/reels/" target="_blank" rel="noopener">
+        <div class="frame" style="background-image:url(media/r4.jpg)"><video data-src="media/r4.mp4" poster="media/r4.jpg" muted loop playsinline preload="none" aria-hidden="true"></video></div>
+        <p>9 вещей за 10 минут до 17.11</p>
+      </a>
+      <a class="reel" href="https://www.instagram.com/ataiev.show/reels/" target="_blank" rel="noopener">
+        <div class="frame" style="background-image:url(media/r5.jpg)"><video data-src="media/r5.mp4" poster="media/r5.jpg" muted loop playsinline preload="none" aria-hidden="true"></video></div>
+        <p>Он пережил 90-е. А ты?</p>
+      </a>
+    </div>
+    <p class="hint">Листайте вбок. Нажмите на ролик, чтобы посмотреть со звуком в Instagram.</p>
+  </section>
+
+  <section aria-labelledby="h-course">
+    <div>
+      <h2 id="h-course">Научиться делать так же</h2>
+      <p class="sub">Доступ выдаёт бот Tribute в Telegram сразу после оплаты.</p>
+    </div>
+    <div class="tiers">
+      <article class="tier">
+        <header><h3>Мини-гайд</h3><span class="price">0 $</span></header>
+        <ul>
+          <li>Что такое Claude Code и что поставить</li>
+          <li>Первый мультик за вечер по готовому промту</li>
+          <li>8 промтов для старта</li>
+        </ul>
+        <a class="btn btn-ghost" data-link="free" href="https://t.me/PLACEHOLDER_FREE_CHANNEL" target="_blank" rel="noopener">Забрать гайд</a>
+      </article>
+      <article class="tier">
+        <header><h3>Курс</h3><span class="price">4.99 $</span></header>
+        <ul>
+          <li>Весь путь ролика: сценарий по формуле хита, озвучка за 0 $, сцены, звук, рендер, обложка</li>
+          <li>Около 10 уроков с разбором на экране</li>
+          <li>Шаблон проекта со стикменами и 20 промтов</li>
+        </ul>
+        <a class="btn btn-ghost" data-link="tribute" href="https://t.me/tribute/app?startapp=PLACEHOLDER_COURSE_499" target="_blank" rel="noopener">Купить курс за 4.99 $</a>
+      </article>
+      <article class="tier top">
+        <header><h3>Полный курс</h3><span class="tag">всё сразу</span></header>
+        <span class="price">9.99 $</span>
+        <ul>
+          <li>Всё из курса за 4.99 $</li>
+          <li>Мой скил claude-reels: ставится одной командой</li>
+          <li>Два стиля: стикмены и гравюра</li>
+          <li>59 промтов, автопостинг в Instagram, аналитика</li>
+          <li>Как зарабатывать: реклама, продажа роликов, клиенты</li>
+        </ul>
+        <a class="btn btn-main" data-link="tribute" href="https://t.me/tribute/app?startapp=PLACEHOLDER_COURSE_999" target="_blank" rel="noopener">Купить полный курс за 9.99 $</a>
+      </article>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-order">
+    <div>
+      <h2 id="h-order">Ролик на заказ</h2>
+      <p class="sub">Мультик под ваш блог, бизнес или рекламу. Формат 9:16 для Reels, Shorts и TikTok.</p>
+    </div>
+    <div class="box packs">
+      <div class="pack"><b>Старт</b><span class="p">24 $</span><span>Рилс до 30 секунд: сценарий, озвучка, субтитры, одна правка</span></div>
+      <div class="pack"><b>Хит</b><span class="p">44 $</span><span>Рилс до 60 секунд по формуле моих хитов: сильный хук, музыка, обложка, две правки</span></div>
+      <div class="pack"><b>Серия</b><span class="p">от 88 $</span><span>3–5 роликов в одном стиле, свой персонаж для бренда</span></div>
+    </div>
+    <ol class="steps">
+      <li><div><b>Вы пишете идею</b><span>В Telegram: о чём ролик и для кого. Можно одной фразой.</span></div></li>
+      <li><div><b>Я присылаю сценарий</b><span>Текст и раскадровку на согласование до начала работы.</span></div></li>
+      <li><div><b>Анимация и озвучка</b><span>Сцены, голос, музыка и звук.</span></div></li>
+      <li><div><b>Готовый ролик</b><span>Файл 9:16 для публикации и правки по пакету.</span></div></li>
+    </ol>
+    <a class="btn btn-main" href="https://t.me/IstTiimur" target="_blank" rel="noopener">Обсудить ролик с @IstTiimur</a>
+  </section>
+
+  <section aria-labelledby="h-revs">
+    <h2 id="h-revs">Отзывы</h2>
+    <div class="revs">
+      <div class="rev"><span class="flag">заглушка: добавить реальный отзыв</span><br><b>Имя, ник</b>: текст отзыва ученика или заказчика, лучше со скрином.</div>
+      <div class="rev"><span class="flag">заглушка: добавить реальный отзыв</span><br><b>Имя, ник</b>: что получилось и сколько просмотров набрал ролик.</div>
+    </div>
+  </section>
+
+  <footer>
+    <nav aria-label="Ещё ссылки">
+      <a href="https://www.instagram.com/ataiev.show/" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://t.me/IstTiimur" target="_blank" rel="noopener">Написать в Telegram</a>
+      <a data-link="gta" href="https://t.me/PLACEHOLDER_GTA_CHANNEL" target="_blank" rel="noopener">Канал про нарезки GTA 6</a>
+    </nav>
+    <span>© 2026 Тим · ИИ-мультики в Claude Code</span>
+  </footer>
+</div>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script>
+(function(){
+  // Превью роликов: грузим и крутим только видимые, без звука. Экономим трафик при Save-Data и reduced motion.
+  var vids=[].slice.call(document.querySelectorAll('video[data-src]'));
+  var saveData=navigator.connection&&navigator.connection.saveData;
+  var still=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!saveData&&!still&&'IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){
+      var v=e.target;
+      if(e.isIntersecting){ if(!v.src){v.src=v.dataset.src;} var p=v.play(); if(p&&p.catch)p.catch(function(){}); }
+      else if(v.src){ v.pause(); }
+    });},{threshold:.35});
+    vids.forEach(function(v){io.observe(v);v.addEventListener("playing",function(){v.classList.add("on");},{once:true});});
+  }
+  // Ссылки-заглушки: пока каналы не созданы, показываем подсказку вместо перехода в пустоту.
+  var t=document.getElementById('toast'),timer;
+  document.addEventListener('click',function(e){
+    var a=e.target.closest&&e.target.closest('a[href*="PLACEHOLDER"]');
+    if(!a)return;
+    e.preventDefault();
+    t.textContent=a.dataset.link==='tribute'?'Оплата откроется, когда подключим Tribute':'Канал скоро откроется';
+    t.hidden=false;clearTimeout(timer);timer=setTimeout(function(){t.hidden=true;},2600);
+  });
+})();
+</script>
+</body></html>
